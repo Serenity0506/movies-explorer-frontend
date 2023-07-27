@@ -1,8 +1,8 @@
-// import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styles from './Navigation.module.css'
 import ProfileButton from '../Sharing/ProfileButton/ProfileButton'
 import classNames from 'classnames'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 function Navigation({
   onCloseBurgerPopup,
@@ -10,7 +10,7 @@ function Navigation({
   isOpenBurger,
   changeBurgerView,
 }) {
-  // const nav = useNavigate()
+  const nav = useNavigate()
 
   return (
     <>
@@ -19,14 +19,14 @@ function Navigation({
           <Link to='/signup' className={styles.navigation__signup}>
             <span>Регистрация</span>
           </Link>
-          <Link to='/signin'>
-            <button
-              className={styles.navigation__button}
-              // onClick={() => nav('/profile')}
-            >
-              Войти
-            </button>
-          </Link>
+          {/* <Link to='/signin'> */}
+          <button
+            className={styles.navigation__button}
+            onClick={() => nav('/signin')}
+          >
+            Войти
+          </button>
+          {/* </Link> */}
         </nav>
       ) : (
         <>
@@ -44,9 +44,12 @@ function Navigation({
               </Link>
             </div>
           </nav>
-          <Link to='/profile' className={styles.navigation__nodecor}>
-            <ProfileButton />
-          </Link>
+          <div className={styles.navigation__nodecor}>
+            <ProfileButton
+              className={styles.navigation__nodecor}
+              onClick={() => nav('/profile')}
+            />
+          </div>
           <button
             className={styles.navigation__burger_button}
             onClick={changeBurgerView}
@@ -75,9 +78,9 @@ function Navigation({
           <Link to='/saved-movies' className={styles.navigation__burger_link}>
             Сохранённые фильмы
           </Link>
-          <Link to='/profile' className={styles.navigation__margin}>
-            <ProfileButton />
-          </Link>
+          <div to='/profile' className={styles.navigation__margin}>
+            <ProfileButton onClick={() => nav('/profile')} />
+          </div>
         </div>
       </nav>
     </>
