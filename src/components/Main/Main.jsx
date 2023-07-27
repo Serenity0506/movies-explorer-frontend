@@ -8,7 +8,7 @@ import { Techs } from './Techs/Techs'
 
 export const Main = () => {
   return (
-    <>
+    <main>
       <Header isLoggedIn={false} />
       <Promo />
       <NavTab />
@@ -16,6 +16,6 @@ export const Main = () => {
       <Techs />
       <Portfolio />
       <Footer />
-    </>
+    </main>
   )
 }

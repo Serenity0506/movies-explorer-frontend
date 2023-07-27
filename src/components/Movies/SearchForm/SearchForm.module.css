@@ -51,6 +51,10 @@
   line-height: 18px; /* 150% */
 }
 
+.searchForm__find:hover {
+  text-decoration: underline;
+}
+
 .searchForm__checkbox_container {
   border-bottom: 1px solid #e8e8e8;
   height: 59px;

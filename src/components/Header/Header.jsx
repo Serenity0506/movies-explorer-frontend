@@ -13,7 +13,7 @@ export function Header({
 }) {
   if (!isLoggedIn) {
     return (
-      <div className={styles.header__background_dark}>
+      <header className={styles.header__background_dark}>
         <Link to='/'>
           <img src={logoMain} className={styles.header__logo} alt='logo'></img>
         </Link>
@@ -23,12 +23,12 @@ export function Header({
           changeBurgerView={changeBurgerView}
           onCloseBurgerPopup={onCloseBurgerPopup}
         />
-      </div>
+      </header>
     )
   }
 
   return (
-    <div className={styles.header__background}>
+    <header className={styles.header__background}>
       <Link to='/'>
         <img src={logoMain} className={styles.header__logo} alt='logo'></img>
       </Link>
@@ -38,7 +38,7 @@ export function Header({
         changeBurgerView={changeBurgerView}
         onCloseBurgerPopup={onCloseBurgerPopup}
       />
-    </div>
+    </header>
   )
 }
 

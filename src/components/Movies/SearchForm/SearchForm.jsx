@@ -11,8 +11,12 @@ export default function SearchForm() {
           type='text'
           placeholder='Фильм'
           name='search'
+          minLength={3}
+          maxLength={30}
         />
-        <button className={styles.searchForm__find}>Найти</button>
+        <button type='button' className={styles.searchForm__find}>
+          Найти
+        </button>
       </form>
       <div className={styles.searchForm__checkbox_container}>
         <Checkbox labelText='Короткометражки' />

@@ -36,32 +36,28 @@ export default function Auth({ showLoginView, onClick }) {
         <img src={logoMain} className={styles.auth__logo} alt='logo'></img>
       </Link>
       <h1 className={styles.auth__title}>{formSettings.headerText}</h1>
-      <form name='auth'>
+      <form name='auth' className={styles.auth__form}>
         {!!formSettings.showNameInput && (
           <>
-            <label htmlFor='name' className={styles.auth__label}>
-              Имя
-            </label>
+            <label className={styles.auth__label}>Имя</label>
             <input
               name='name'
               type='text'
               className={classNames(styles.auth__input)}
               defaultValue='Виталий'
+              required
             />
           </>
         )}
-        <label htmlFor='email' className={styles.auth__label}>
-          E-mail
-        </label>
+        <label className={styles.auth__label}>E-mail</label>
         <input
           name='email'
           type='email'
           className={styles.auth__input}
           defaultValue='pochta@yandex.ru'
+          required
         />
-        <label htmlFor='password' className={styles.auth__label}>
-          Пароль
-        </label>
+        <label className={styles.auth__label}>Пароль</label>
         <input
           name='password'
           type='password'
