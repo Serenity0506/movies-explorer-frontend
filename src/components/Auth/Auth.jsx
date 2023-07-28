@@ -1,11 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import logoMain from '../../images/logo.svg'
 import styles from './Auth.module.css'
 import classNames from 'classnames'
 import { useState } from 'react'
+import apiMain from '../../utils/Api/ApiMain'
+import Preloader from '../Sharing/Preloader/Preloader'
 
 export default function Auth({ showLoginView, onClick }) {
-  const [password, setPassword] = useState('123')
+  // const [password, setPassword] = useState('123')
 
   const formSettings = showLoginView
     ? {
@@ -30,13 +32,40 @@ export default function Auth({ showLoginView, onClick }) {
         click: onClick,
       }
 
+  const [value, setValue] = useState({
+    name: '',
+    email: '',
+    password: '',
+  })
+
+  const navigate = useNavigate()
+
+  // const { mutateAsync, isLoading, isError, error } = useMutation({
+  //   mutationFn: (data) => apiMain.signUp(data),
+  // })
+
+  // const handleSubmit = async (values) => {
+  //   await mutateAsync({
+  //     email: values.email,
+  //     group: values.group,
+  //     password: values.password,
+  //   })
+  //   navigate('/signin')
+  }
+  // if (isLoading) return <Preloader />
+  // if (isError) return <p>{`${error} `}</p>
+
   return (
-    <main className={styles.auth__container}>
+    <div className={styles.auth__container}>
       <Link to='/'>
         <img src={logoMain} className={styles.auth__logo} alt='logo'></img>
       </Link>
       <h1 className={styles.auth__title}>{formSettings.headerText}</h1>
-      <form name='auth' className={styles.auth__form}>
+      <form
+        name='auth'
+        className={styles.auth__form}
+        onSubmit={(values) => handleSubmit(values)}
+      >
         {!!formSettings.showNameInput && (
           <>
             <label className={styles.auth__label}>Имя</label>
@@ -87,6 +116,6 @@ export default function Auth({ showLoginView, onClick }) {
           {formSettings.subtitleLinkText}
         </Link>
       </div>
-    </main>
+    </div>
   )
 }
