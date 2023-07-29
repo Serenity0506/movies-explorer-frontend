@@ -13,6 +13,7 @@ export default function SearchForm() {
           name='search'
           minLength={3}
           maxLength={30}
+          required
         />
         <button type='button' className={styles.searchForm__find}>
           Найти

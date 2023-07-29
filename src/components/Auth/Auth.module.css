@@ -28,7 +28,6 @@
   display: flex;
   flex-direction: column;
   color: #a0a0a0;
-  font-family: Inter;
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
@@ -37,7 +36,6 @@
 
 .auth__input {
   color: #000;
-  font-family: Inter;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -61,7 +59,6 @@
 }
 
 .auth__error_text {
-  font-family: Inter;
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
@@ -89,7 +86,6 @@
 .auth__subtitle_text {
   color: #a0a0a0;
   text-align: center;
-  font-family: Inter;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -99,7 +95,6 @@
 .auth__subtitle_link {
   color: #ff6838;
   text-align: center;
-  font-family: Inter;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

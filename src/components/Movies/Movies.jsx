@@ -17,9 +17,11 @@ export const Movies = ({
         changeBurgerView={changeBurgerView}
         onCloseBurgerPopup={onCloseBurgerPopup}
       />
-      <SearchForm />
-      <MoviesCardList />
-      <Footer />
+      <main>
+        <SearchForm />
+        <MoviesCardList />
+        <Footer />
+      </main>
     </>
   )
 }

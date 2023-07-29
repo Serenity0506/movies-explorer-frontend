@@ -3,7 +3,6 @@
   height: auto;
   padding: 79px 70px 20px 70px;
   font-size: 13px;
-  font-family: Inter;
   background-color: #fafafa;
   font-weight: 400;
 }
@@ -19,7 +18,6 @@
     width: auto;
     padding: 79px 10px 20px 10px;
     font-size: 12px;
-    font-family: Inter;
   }
 }
 

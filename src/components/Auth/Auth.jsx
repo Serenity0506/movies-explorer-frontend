@@ -44,7 +44,7 @@ export default function Auth({ showLoginView, onClick }) {
               name='name'
               type='text'
               className={classNames(styles.auth__input)}
-              defaultValue='Виталий'
+              placeholder='Виталий'
               required
             />
           </>
@@ -54,7 +54,7 @@ export default function Auth({ showLoginView, onClick }) {
           name='email'
           type='email'
           className={styles.auth__input}
-          defaultValue='pochta@yandex.ru'
+          placeholder='pochta@yandex.ru'
           required
         />
         <label className={styles.auth__label}>Пароль</label>
