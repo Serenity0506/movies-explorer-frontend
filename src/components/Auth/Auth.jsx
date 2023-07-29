@@ -3,11 +3,39 @@ import logoMain from '../../images/logo.svg'
 import styles from './Auth.module.css'
 import classNames from 'classnames'
 import { useState } from 'react'
-import apiMain from '../../utils/Api/ApiMain'
+import ApiMain from '../../utils/Api/ApiMain'
 import Preloader from '../Sharing/Preloader/Preloader'
+import { useFormWithValidation } from '../../utils/hooks/useFormWithValidation'
+import { UseCurrentUserContext } from '../../context/CurrentUserContext'
 
-export default function Auth({ showLoginView, onClick }) {
-  // const [password, setPassword] = useState('123')
+export default function Auth({ showLoginView, onRegister }) {
+  const navigate = useNavigate()
+  const { setToken } = UseCurrentUserContext()
+
+  const { values, errors, handleChange } = useFormWithValidation({
+    name: '',
+    email: '',
+    password: '',
+  })
+
+  const [formError, setFormError] = useState('')
+
+  const handleLogin = () => {}
+
+  const handleRegister = (evt) => {
+    evt.preventDefault()
+    setFormError('')
+
+    ApiMain.signUp(values)
+      .then((data) => {
+        console.log(data)
+        setToken(data.token)
+        navigate('/movies')
+      })
+      .catch((error) => {
+        setFormError(error)
+      })
+  }
 
   const formSettings = showLoginView
     ? {
@@ -19,7 +47,7 @@ export default function Auth({ showLoginView, onClick }) {
         subtitleText: 'Ещё не зарегистрированы?',
         subtitleLinkText: 'Регистрация',
         subtitleLinkPath: '/signup',
-        click: onClick,
+        submit: handleLogin,
       }
     : {
         // Регистрация
@@ -29,16 +57,8 @@ export default function Auth({ showLoginView, onClick }) {
         subtitleText: 'Уже зарегистрированы?',
         subtitleLinkText: 'Войти',
         subtitleLinkPath: '/signin',
-        click: onClick,
+        submit: handleRegister,
       }
-
-  const [value, setValue] = useState({
-    name: '',
-    email: '',
-    password: '',
-  })
-
-  const navigate = useNavigate()
 
   // const { mutateAsync, isLoading, isError, error } = useMutation({
   //   mutationFn: (data) => apiMain.signUp(data),
@@ -51,7 +71,7 @@ export default function Auth({ showLoginView, onClick }) {
   //     password: values.password,
   //   })
   //   navigate('/signin')
-  }
+  // }
   // if (isLoading) return <Preloader />
   // if (isError) return <p>{`${error} `}</p>
 
@@ -61,10 +81,11 @@ export default function Auth({ showLoginView, onClick }) {
         <img src={logoMain} className={styles.auth__logo} alt='logo'></img>
       </Link>
       <h1 className={styles.auth__title}>{formSettings.headerText}</h1>
+      <Preloader />
       <form
         name='auth'
         className={styles.auth__form}
-        onSubmit={(values) => handleSubmit(values)}
+        onSubmit={formSettings.submit}
       >
         {!!formSettings.showNameInput && (
           <>
@@ -73,7 +94,8 @@ export default function Auth({ showLoginView, onClick }) {
               name='name'
               type='text'
               className={classNames(styles.auth__input)}
-              defaultValue='Виталий'
+              value={values.name}
+              onChange={handleChange}
               required
             />
           </>
@@ -83,28 +105,31 @@ export default function Auth({ showLoginView, onClick }) {
           name='email'
           type='email'
           className={styles.auth__input}
-          defaultValue='pochta@yandex.ru'
+          value={values.email}
+          onChange={handleChange}
           required
         />
         <label className={styles.auth__label}>Пароль</label>
         <input
           name='password'
           type='password'
-          className={classNames(styles.auth__input, true && styles.auth__error)}
-          value={password}
+          className={classNames(
+            styles.auth__input,
+            errors.password && styles.auth__error
+          )}
+          value={values.password}
+          onChange={handleChange}
           minLength='6'
-          onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <span className={styles.auth__error_text}>Что-то пошло не так...</span>
-        <button
-          type='submit'
-          className={styles.auth__primary_button}
-          onClick={formSettings.click}
-        >
+        {errors.password && (
+          <span className={styles.auth__error_text}>{errors.password}</span>
+        )}
+        <button type='submit' className={styles.auth__primary_button}>
           {formSettings.primaryButtonText}
         </button>
       </form>
+      <span>{formError.message}</span>
       <div className={styles.auth_subtitle}>
         <span className={styles.auth__subtitle_text}>
           {formSettings.subtitleText}{' '}

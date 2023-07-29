@@ -12,7 +12,7 @@ import apiMain from './utils/Api/ApiMain';
 import { UseCurrentUserContext } from './context/CurrentUserContext';
 
 
-function App() {
+export function App() {
 
   const { token, setToken, email, setEmail, currentUser, setCurrentUser, loading, setLoading } = UseCurrentUserContext();
 
@@ -85,12 +85,12 @@ function App() {
   };
 
 
-  //регистрация в системе
-  // const register = (evt) => {
-  //   // evt.preventDefault();
-  //   apiMain.signUp()
+  // регистрация в системе
+  const register = (evt) => {
+    // evt.preventDefault();
+    apiMain.signUp()
 
-
+  }
 
 
   //   navigate('/signin', { replace: true });
@@ -156,7 +156,3 @@ function App() {
     </>
   );
 }
-
-export default App;
-
-
