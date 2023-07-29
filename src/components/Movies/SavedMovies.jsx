@@ -18,8 +18,10 @@ export const SavedMovies = ({
         changeBurgerView={changeBurgerView}
         onCloseBurgerPopup={onCloseBurgerPopup}
       />
-      <SearchForm />
-      <MoviesCardList />
+      <main>
+        <SearchForm />
+        <MoviesCardList />
+      </main>
       <Footer />
     </>
   )

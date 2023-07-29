@@ -24,7 +24,7 @@ export const Profile = ({
         changeBurgerView={changeBurgerView}
         onCloseBurgerPopup={onCloseBurgerPopup}
       />
-      <section className={styles.profile__container}>
+      <main className={styles.profile__container}>
         <h1 className={styles.profile__title}>Привет, Виталий!</h1>
         <form className={styles.profile__labels}>
           <label className={styles.profile__label}>
@@ -86,7 +86,7 @@ export const Profile = ({
             </button>
           </div>
         )}
-      </section>
+      </main>
     </>
   )
 }

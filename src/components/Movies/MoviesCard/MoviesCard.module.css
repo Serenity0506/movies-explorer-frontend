@@ -16,7 +16,6 @@
 
 .moviesCard__name {
   color: #000;
-  font-family: Inter;
   font-size: 13px;
   font-style: normal;
   font-weight: 500;
@@ -30,7 +29,6 @@
 
 .moviesCard__duration {
   color: #a0a0a0;
-  font-family: Inter;
   font-size: 11px;
   font-style: normal;
   font-weight: 400;

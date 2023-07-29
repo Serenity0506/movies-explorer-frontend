@@ -78,7 +78,7 @@ function Navigation({
           <Link to='/saved-movies' className={styles.navigation__burger_link}>
             Сохранённые фильмы
           </Link>
-          <div to='/profile' className={styles.navigation__margin}>
+          <div className={styles.navigation__margin}>
             <ProfileButton onClick={() => nav('/profile')} />
           </div>
         </div>
