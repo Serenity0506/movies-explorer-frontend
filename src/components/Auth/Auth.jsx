@@ -10,26 +10,28 @@ import { UseCurrentUserContext } from '../../context/CurrentUserContext'
 
 export default function Auth({ showLoginView, onRegister }) {
   const navigate = useNavigate()
-  const { setToken } = UseCurrentUserContext()
+  const { setToken, setEmail } = UseCurrentUserContext()
 
   const { values, errors, handleChange } = useFormWithValidation({
-    name: '',
-    email: '',
-    password: '',
+    name: 'Admin',
+    email: 'admin@local.ru',
+    password: '123456',
   })
 
   const [formError, setFormError] = useState('')
 
-  const handleLogin = () => {}
-
-  const handleRegister = (evt) => {
+  const handleFormSubmit = (evt) => {
     evt.preventDefault()
     setFormError('')
 
-    ApiMain.signUp(values)
+    const action = showLoginView ? ApiMain.signIn : ApiMain.signUp
+
+    action
+      .call(ApiMain, values)
       .then((data) => {
-        console.log(data)
         setToken(data.token)
+        setEmail(data.email)
+
         navigate('/movies')
       })
       .catch((error) => {
@@ -47,7 +49,6 @@ export default function Auth({ showLoginView, onRegister }) {
         subtitleText: 'Ещё не зарегистрированы?',
         subtitleLinkText: 'Регистрация',
         subtitleLinkPath: '/signup',
-        submit: handleLogin,
       }
     : {
         // Регистрация
@@ -57,7 +58,6 @@ export default function Auth({ showLoginView, onRegister }) {
         subtitleText: 'Уже зарегистрированы?',
         subtitleLinkText: 'Войти',
         subtitleLinkPath: '/signin',
-        submit: handleRegister,
       }
 
   // const { mutateAsync, isLoading, isError, error } = useMutation({
@@ -85,7 +85,7 @@ export default function Auth({ showLoginView, onRegister }) {
       <form
         name='auth'
         className={styles.auth__form}
-        onSubmit={formSettings.submit}
+        onSubmit={handleFormSubmit}
       >
         {!!formSettings.showNameInput && (
           <>

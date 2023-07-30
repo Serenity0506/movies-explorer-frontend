@@ -39,6 +39,7 @@
 }
 
 .profile__input {
+  color: black;
   outline: none;
   border: none;
   text-align: end;
@@ -46,7 +47,7 @@
 }
 
 .profile__input:disabled {
-  color: #fff;
+  /* color: #fff; */
   background-color: transparent;
 }
 
@@ -55,8 +56,9 @@
   font-size: 10px;
   font-weight: 400;
   line-height: normal;
-  color: #ee3465;
+  /* color: #ee3465; */
   text-align: center;
+  height: 20px;
 }
 
 .profile__edit {
@@ -79,6 +81,10 @@
   margin: 10px auto 0 auto;
   background: 0;
   border: 0;
+}
+
+.profile__savebutton:disabled {
+  color: #a0a0a0;
 }
 
 .profile__savebutton:active {

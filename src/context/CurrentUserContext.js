@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useMemo, useState } from "react"
 
 export const CurrentUserContext = createContext()
 export const UseCurrentUserContext = () => useContext(CurrentUserContext)
@@ -17,7 +17,6 @@ export function AppContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     localStorage.setItem("token", token)
   }, [token])
@@ -26,9 +25,11 @@ export function AppContextProvider({ children }) {
     localStorage.setItem("email", email)
   }, [email])
 
+  const isLoggedIn = useMemo(() => !!token, [token])
+
   return (
     <CurrentUserContext.Provider
-      value={{ token, setToken, email, setEmail, currentUser, setCurrentUser, loading, setLoading }}
+      value={{ token, setToken, isLoggedIn, email, setEmail, currentUser, setCurrentUser, loading, setLoading }}
     >
       {children}
     </CurrentUserContext.Provider>

@@ -125,7 +125,8 @@ class ApiMain {
 
 
 const apiMain = new ApiMain({
-  url: "https://api.movies.serenity0506.nomoredomains.work",
+  // url: "https://api.movies.serenity0506.nomoredomains.work",
+  url: "http://localhost:3000",
   headers: {
     'content-type': 'application/json',
     Authorization: '',
