@@ -9,7 +9,7 @@ import classNames from 'classnames'
 
 export const Profile = () => {
   const navigate = useNavigate()
-  const { isLoggedIn, setToken, setCurrentUser } = UseCurrentUserContext()
+  const { isLoggedIn, onLogout } = UseCurrentUserContext()
 
   const [isProfileFetched, setIsProfileFetched] = useState(false)
   const [isFormReadOnly, setIsFormReadOnly] = useState(true)
@@ -41,12 +41,8 @@ export const Profile = () => {
       .finally(() => setTimeout(() => setMessage(''), 3000))
   }
 
-  const onLogOut = () => {
-    setToken('')
-    setCurrentUser({})
-    localStorage.clear()
-    // window.localStorage.clear()
-    // localStorage.removeItem('search')
+  const handleLogOut = () => {
+    onLogout()
     navigate('/')
   }
 
@@ -135,7 +131,7 @@ export const Profile = () => {
             </button>
             <button
               type='button'
-              onClick={onLogOut}
+              onClick={handleLogOut}
               className={styles.profile__logout}
             >
               Выйти из аккаунта

@@ -17,17 +17,12 @@ export function AppContextProvider({ children }) {
   const [search, setSearch] = useState(() => {
     const searchFromLS = JSON.parse(localStorage.getItem("search"))
     return searchFromLS || { query: '', isShortsOnly: false }
-    // return searchFromLS || "" && { isShortsOnly: false }
-
   })
+
+  const resetSearch = () => setSearch({ query: '', isShortsOnly: false })
 
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const [movieId, setMovieId] = useState(() => {
-    const movieFromLS = localStorage.getItem("movie")
-    return movieFromLS || ""
-  })
 
   useEffect(() => {
     localStorage.setItem("token", token)
@@ -41,15 +36,19 @@ export function AppContextProvider({ children }) {
     localStorage.setItem("search", JSON.stringify(search))
   }, [search])
 
-  useEffect(() => {
-    localStorage.setItem("movie", JSON.stringify(Object))
-  })
-
   const isLoggedIn = useMemo(() => !!token, [token])
+
+  const onLogout = () => {
+    setToken('')
+    setCurrentUser({})
+    resetSearch()
+
+    localStorage.clear()
+  }
 
   return (
     <CurrentUserContext.Provider
-      value={{ token, setToken, isLoggedIn, email, setEmail, currentUser, setCurrentUser, loading, setLoading, search, setSearch, movieId, setMovieId }}
+      value={{ token, setToken, isLoggedIn, onLogout, email, setEmail, currentUser, setCurrentUser, loading, setLoading, search, setSearch, resetSearch }}
     >
       {children}
     </CurrentUserContext.Provider>

@@ -15,17 +15,25 @@ class ApiMovies {
 
   //MOVIE
   getMovies() {
-    return fetch(`${this.options.url}`, {
-      method: 'GET',
-      headers: this._headers,
-    }).then(_response).then(movies => movies.map(m => ({
-      ...m,
-      image: this.options.image_base_url + m.image.url,
-      thumbnail: this.options.image_base_url + m.image.formats.thumbnail.url,
-    }))
-    );
-  }
+    const localMoviesCache = JSON.parse(localStorage.getItem('movies'))
 
+    return localMoviesCache
+      ? Promise.resolve(localMoviesCache)
+      : fetch(`${this.options.url}`, {
+        method: 'GET',
+        headers: this._headers,
+      }).then(_response)
+        .then(movies => movies.map(m => ({
+          ...m,
+          image: this.options.image_base_url + m.image.url,
+          thumbnail: this.options.image_base_url + m.image.formats.thumbnail.url,
+        }))
+        ).then((movies) => {
+          localStorage.setItem('movies', JSON.stringify(movies))
+
+          return movies
+        });
+  }
 }
 
 const apiMovies = new ApiMovies({
