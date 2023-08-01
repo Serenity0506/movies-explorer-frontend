@@ -11,7 +11,6 @@ import { useMoviesResizer } from '../../utils/hooks/useMoviesResizer'
 export const SavedMovies = () => {
   const [search, setSearch] = useState({ query: '', isShortsOnly: false })
 
-  const [isSearchHappened, setIsSearchHappened] = useState(false)
   const [isMoviesFetched, setIsMoviesFetched] = useState(false)
   const [isMoviesFetchError, setIsMoviesFetchError] = useState(false)
   const [allMovies, setAllMovies] = useState([])
@@ -66,9 +65,7 @@ export const SavedMovies = () => {
           }
           onDelete={handleSavedCardDelete}
         />
-        {isSearchHappened && !isMoviesFetched && !isMoviesFetchError && (
-          <Preloader />
-        )}
+        {!isMoviesFetched && !isMoviesFetchError && <Preloader />}
       </main>
       <Footer />
     </>

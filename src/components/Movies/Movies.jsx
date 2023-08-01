@@ -87,7 +87,7 @@ export const Movies = () => {
             'Нужно ввести ключевое слово'}
           {isMoviesFetchError && 'Ошибка загрузки данных'}
         </div>
-        {isMoviesFetched && (
+        {isMoviesFetched && !isSearchFormEmpty && (
           <MoviesCardList
             movies={filteredMovies}
             isNoMoreMovies={allMovies.length === filteredMovies.length}
