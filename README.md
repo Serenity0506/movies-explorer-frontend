@@ -12,3 +12,7 @@ CSS, HTML, JavaScript, React.
 Ссылка на пулреквест: https://github.com/Serenity0506/movies-explorer-frontend/pull/2
 
 Ссылка на макет: https://disk.yandex.ru/d/ttQJ6NU0tW61bQ
+
+Ссылка на бек: https://api.movies.serenity0506.nomoredomains.work
+
+Ссылка на фронт: https://movies.serenity0506.nomoredomains.work
