@@ -36,14 +36,17 @@ export const Profile = () => {
       })
       .catch((error) => {
         setMessage('Не удалось обновить профиль :(')
+        console.log(error)
       })
       .finally(() => setTimeout(() => setMessage(''), 3000))
   }
 
   const onLogOut = () => {
-    localStorage.clear()
     setToken('')
     setCurrentUser({})
+    localStorage.clear()
+    // window.localStorage.clear()
+    // localStorage.removeItem('search')
     navigate('/')
   }
 
@@ -56,7 +59,9 @@ export const Profile = () => {
         setValues(user)
         setIsProfileFetched(true)
       })
-      .catch(() => {})
+      .catch((error) => {
+        console.log(error)
+      })
   }, [isLoggedIn, setValues])
 
   return (

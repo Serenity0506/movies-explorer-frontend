@@ -14,8 +14,20 @@ export function AppContextProvider({ children }) {
     return emailFromLS || ""
   })
 
+  const [search, setSearch] = useState(() => {
+    const searchFromLS = JSON.parse(localStorage.getItem("search"))
+    return searchFromLS || { query: '', isShortsOnly: false }
+    // return searchFromLS || "" && { isShortsOnly: false }
+
+  })
+
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const [movieId, setMovieId] = useState(() => {
+    const movieFromLS = localStorage.getItem("movie")
+    return movieFromLS || ""
+  })
 
   useEffect(() => {
     localStorage.setItem("token", token)
@@ -25,11 +37,19 @@ export function AppContextProvider({ children }) {
     localStorage.setItem("email", email)
   }, [email])
 
+  useEffect(() => {
+    localStorage.setItem("search", JSON.stringify(search))
+  }, [search])
+
+  useEffect(() => {
+    localStorage.setItem("movie", JSON.stringify(Object))
+  })
+
   const isLoggedIn = useMemo(() => !!token, [token])
 
   return (
     <CurrentUserContext.Provider
-      value={{ token, setToken, isLoggedIn, email, setEmail, currentUser, setCurrentUser, loading, setLoading }}
+      value={{ token, setToken, isLoggedIn, email, setEmail, currentUser, setCurrentUser, loading, setLoading, search, setSearch, movieId, setMovieId }}
     >
       {children}
     </CurrentUserContext.Provider>

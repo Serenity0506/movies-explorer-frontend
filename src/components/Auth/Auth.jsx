@@ -2,15 +2,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import logoMain from '../../images/logo.svg'
 import styles from './Auth.module.css'
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ApiMain from '../../utils/Api/ApiMain'
-import Preloader from '../Sharing/Preloader/Preloader'
+// import Preloader from '../Sharing/Preloader/Preloader'
 import { useFormWithValidation } from '../../utils/hooks/useFormWithValidation'
 import { UseCurrentUserContext } from '../../context/CurrentUserContext'
 
 export default function Auth({ showLoginView, onRegister }) {
   const navigate = useNavigate()
-  const { setToken, setEmail } = UseCurrentUserContext()
+  const { setToken, setEmail, isLoggedIn } = UseCurrentUserContext()
 
   const { values, errors, handleChange } = useFormWithValidation({
     name: 'Admin',
@@ -19,6 +19,10 @@ export default function Auth({ showLoginView, onRegister }) {
   })
 
   const [formError, setFormError] = useState('')
+
+  useEffect(() => {
+    if (isLoggedIn) navigate('/')
+  }, [isLoggedIn, navigate])
 
   const handleFormSubmit = (evt) => {
     evt.preventDefault()
@@ -60,28 +64,13 @@ export default function Auth({ showLoginView, onRegister }) {
         subtitleLinkPath: '/signin',
       }
 
-  // const { mutateAsync, isLoading, isError, error } = useMutation({
-  //   mutationFn: (data) => apiMain.signUp(data),
-  // })
-
-  // const handleSubmit = async (values) => {
-  //   await mutateAsync({
-  //     email: values.email,
-  //     group: values.group,
-  //     password: values.password,
-  //   })
-  //   navigate('/signin')
-  // }
-  // if (isLoading) return <Preloader />
-  // if (isError) return <p>{`${error} `}</p>
-
   return (
     <div className={styles.auth__container}>
       <Link to='/'>
         <img src={logoMain} className={styles.auth__logo} alt='logo'></img>
       </Link>
       <h1 className={styles.auth__title}>{formSettings.headerText}</h1>
-      <Preloader />
+      {/* <Preloader /> */}
       <form
         name='auth'
         className={styles.auth__form}

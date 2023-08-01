@@ -1,8 +1,15 @@
 import { useState } from 'react'
 import styles from './Checkbox.module.css'
 
-function Checkbox({ labelText }) {
-  const [checked, setChecked] = useState(true)
+function Checkbox({ labelText, checkedInitial, onChange }) {
+  const [checked, setChecked] = useState(checkedInitial)
+
+  const handleChange = () => {
+    setChecked(!checked)
+    onChange(!checked)
+  }
+
+  // console.log(checked)
 
   return (
     <label className={styles.checkbox__container}>
@@ -12,7 +19,7 @@ function Checkbox({ labelText }) {
         type='checkbox'
         name='name'
         // hidden
-        onChange={() => setChecked(!checked)}
+        onChange={handleChange}
       ></input>
       <span className={styles.checkbox__icon}></span>
       {labelText}
@@ -21,5 +28,3 @@ function Checkbox({ labelText }) {
 }
 
 export default Checkbox
-
-// // { value, children, onChange, name }

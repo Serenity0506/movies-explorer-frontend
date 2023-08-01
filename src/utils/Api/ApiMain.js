@@ -11,7 +11,6 @@ const _response = (res) => {
 class ApiMain {
   constructor(options) {
     this.options = options;
-    this.movies = JSON.parse(localStorage.getItem('saved-movies') || '[]');
   }
 
   //LOADER
@@ -34,7 +33,6 @@ class ApiMain {
     if (this.options.headers.Authorization) {
       delete this.options.headers.Authorization;
     }
-    localStorage.removeItem("token");
   }
 
 
@@ -78,49 +76,45 @@ class ApiMain {
   //MOVIES REQUESTS
 
   getMovies() {
-    if (this.movies.length === 0) {
-      return fetch(`${this.options.url}/movies`, {
-        method: 'GET',
-        headers: this.options.headers,
-      })
-        .then(_response)
-        .then((movies) => {
-          this.movies = movies;
-          localStorage.setItem('saved-movies', JSON.stringify(movies));
-          return movies;
-        });
-    }
-    return Promise.resolve(this.movies);
+    return fetch(`${this.options.url}/movies`, {
+      method: 'GET',
+      headers: this.options.headers,
+    })
+      .then(_response)
+      .then((movies) => {
+        return movies.map((m) => ({
+          ...m,
+          id: m.movieId
+        }));
+      });
   }
 
   ///click like
-  createMovie(film) {
+  createMovieWhenLike(movie) {
     return fetch(`${this.options.url}/movies`, {
       method: 'POST',
       headers: this.options.headers,
-      body: JSON.stringify(film),
+      body: JSON.stringify(movie),
     })
       .then(_response)
       .then((movie) => {
-        this.movies.push(movie);
-        localStorage.setItem('saved-movies', JSON.stringify(this.movies));
         return movie;
       });
   }
 
   ///click unlike
-  deleteMovie(id) {
+  deleteMovieWhenDislike(id) {
     return fetch(`${this.options.url}/movies/${id}`, {
       method: 'DELETE',
       headers: this.options.headers,
     })
       .then(_response)
       .then((movie) => {
-        this.movies = this.movies.filter((movieItem) => movieItem._id !== id);
-        localStorage.setItem('saved-movies', JSON.stringify(this.movies));
         return movie;
       });
   }
+
+
 }
 
 
@@ -135,9 +129,3 @@ const apiMain = new ApiMain({
 
 
 export default apiMain
-
-
-
-    //   if (token) this.options.headers.authorization = "Bearer " + token;
-    // }
-  // }

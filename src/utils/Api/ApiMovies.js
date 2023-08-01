@@ -18,13 +18,19 @@ class ApiMovies {
     return fetch(`${this.options.url}`, {
       method: 'GET',
       headers: this._headers,
-    }).then(_response);
+    }).then(_response).then(movies => movies.map(m => ({
+      ...m,
+      image: this.options.image_base_url + m.image.url,
+      thumbnail: this.options.image_base_url + m.image.formats.thumbnail.url,
+    }))
+    );
   }
 
 }
 
 const apiMovies = new ApiMovies({
   url: "https://api.nomoreparties.co/beatfilm-movies",
+  image_base_url: "https://api.nomoreparties.co",
   headers: {
     'Content-type': 'application/json',
     Authorization: '',

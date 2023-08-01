@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import Navigation from '../Navigation/Navigation'
 import { UseCurrentUserContext } from '../../context/CurrentUserContext'
 import { useEffect, useState } from 'react'
-// import profile from '../../images/icon__COLOR_icon-main.svg'
 
 export function Header() {
   const { isLoggedIn } = UseCurrentUserContext()
@@ -41,7 +40,6 @@ export function Header() {
   if (!isLoggedIn) {
     return (
       <header className={styles.header__background_dark}>
-        {isLoggedIn ? 'YES' : 'NO'}
         <Link to='/'>
           <img src={logoMain} className={styles.header__logo} alt='logo'></img>
         </Link>

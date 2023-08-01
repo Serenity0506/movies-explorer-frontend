@@ -11,7 +11,9 @@
 
 .moviesCard__img {
   width: 100%;
-  /* height: 203px; */
+  height: 100%;
+  object-fit: contain;
+  aspect-ratio: auto;
 }
 
 .moviesCard__name {
@@ -50,6 +52,18 @@
 
 .moviesCard__likebtn:hover {
   opacity: 50%;
+}
+
+.moviesCard__delete {
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  background-image: url(../../../images/delete_movie.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }
 
 .moviesCard__likebtn_active {
