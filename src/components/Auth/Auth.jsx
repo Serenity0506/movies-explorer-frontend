@@ -114,11 +114,13 @@ export default function Auth({ showLoginView, onRegister }) {
         {errors.password && (
           <span className={styles.auth__error_text}>{errors.password}</span>
         )}
+
+        <span className={styles.auth__error_text}>{formError.message}</span>
+
         <button type='submit' className={styles.auth__primary_button}>
           {formSettings.primaryButtonText}
         </button>
       </form>
-      <span>{formError.message}</span>
       <div className={styles.auth_subtitle}>
         <span className={styles.auth__subtitle_text}>
           {formSettings.subtitleText}{' '}

@@ -13,26 +13,10 @@ class ApiMain {
     this.options = options;
   }
 
-  //LOADER
-  _sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   //TOKEN
-
-  getToken() {
-    return this.options.headers.Authorization;
-  }
 
   setToken(token) {
     this.options.headers.Authorization = `Bearer ${token}`;
-  }
-
-
-  removeToken() {
-    if (this.options.headers.Authorization) {
-      delete this.options.headers.Authorization;
-    }
   }
 
 
@@ -119,8 +103,8 @@ class ApiMain {
 
 
 const apiMain = new ApiMain({
-  // url: "https://api.movies.serenity0506.nomoredomains.work",
-  url: "http://localhost:3000",
+  url: "https://api.movies.serenity0506.nomoredomains.work",
+  // url: "http://localhost:3000",
   headers: {
     'content-type': 'application/json',
     Authorization: '',
