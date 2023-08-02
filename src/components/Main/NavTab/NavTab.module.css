@@ -1,0 +1,16 @@
+.navtab__container {
+    height: 66px;
+    background-color: #F5F5F5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+}
+
+.navtab__links {
+    color: black;
+    text-decoration: underline;
+    font-size: 13px;
+    font-weight: 500;
+
+}
