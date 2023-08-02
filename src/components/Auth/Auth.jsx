@@ -94,6 +94,9 @@ export default function Auth({ showLoginView, onRegister }) {
               onChange={handleChange}
               required
             />
+            {errors.name && (
+              <span className={styles.auth__error_text}>{errors.name}</span>
+            )}
           </>
         )}
         <label className={styles.auth__label}>E-mail</label>
