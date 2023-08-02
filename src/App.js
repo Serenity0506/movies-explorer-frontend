@@ -5,12 +5,11 @@ import { PageNotFound } from './components/PageNotFound/PageNotFound';
 import { Movies } from './components/Movies/Movies';
 import { Profile } from './components/Profile/Profile';
 import Auth from './components/Auth/Auth';
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { SavedMovies } from './components/Movies/SavedMovies'
 import { ProtectedRoute } from './HOC/ProtectedRoute';
 import apiMain from './utils/Api/ApiMain';
 import { UseCurrentUserContext } from './context/CurrentUserContext';
-
 
 export function App() {
 

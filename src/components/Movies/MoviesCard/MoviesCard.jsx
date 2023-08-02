@@ -1,11 +1,14 @@
 // import { useState } from 'react'
 import { useState } from 'react'
-import apiMain from '../../../utils/Api/ApiMain'
 import styles from './MoviesCard.module.css'
+import { NavLink } from 'react-router-dom'
+import { useApiMain } from '../../../utils/withApiMain'
 
 export default function MoviesCard({ movie, isSaved, onDelete = () => {} }) {
   const [isLiked, setIsLiked] = useState(movie.like)
   const [movieId, setMovieId] = useState(movie._id)
+
+  const apiMain = useApiMain()
 
   const saveMovie = () => {
     apiMain
@@ -50,7 +53,7 @@ export default function MoviesCard({ movie, isSaved, onDelete = () => {} }) {
 
   return (
     <div className={styles.moviesCard__container}>
-      <a href={movie.trailerLink}>
+      <a href={movie.trailerLink} target='_blank' rel='noreferrer'>
         <img
           className={styles.moviesCard__img}
           src={movie.image}

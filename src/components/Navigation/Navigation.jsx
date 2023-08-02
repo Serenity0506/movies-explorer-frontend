@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import styles from './Navigation.module.css'
 import ProfileButton from '../Sharing/ProfileButton/ProfileButton'
 import classNames from 'classnames'
@@ -32,16 +32,25 @@ function Navigation({
         <>
           <nav className={classNames(styles.navigation__container)}>
             <div className={styles.navigation__container_hide}>
-              <Link to='/movies' className={styles.navigation__container_left}>
+              <NavLink
+                to='/movies'
+                className={styles.navigation__container_left}
+                style={({ isActive }) => {
+                  return { fontWeight: isActive ? '500' : '400' }
+                }}
+              >
                 Фильмы
-              </Link>
+              </NavLink>
 
-              <Link
+              <NavLink
                 to='/saved-movies'
                 className={styles.navigation__container_right}
+                style={({ isActive }) => {
+                  return { fontWeight: isActive ? '500' : '400' }
+                }}
               >
                 Сохрaненные фильмы
-              </Link>
+              </NavLink>
             </div>
           </nav>
           <div className={styles.navigation__nodecor}>

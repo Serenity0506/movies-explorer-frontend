@@ -3,26 +3,49 @@ import { Header } from '../Header/Header'
 import { useEffect, useState } from 'react'
 import { UseCurrentUserContext } from '../../context/CurrentUserContext'
 import { useNavigate } from 'react-router-dom'
-import apiMain from '../../utils/Api/ApiMain'
 import { useFormWithValidation } from '../../utils/hooks/useFormWithValidation'
 import classNames from 'classnames'
+import validator from 'validator'
+import { useApiMain } from '../../utils/withApiMain'
 
 export const Profile = () => {
   const navigate = useNavigate()
   const { isLoggedIn, onLogout } = UseCurrentUserContext()
+  const apiMain = useApiMain()
 
   const [isProfileFetched, setIsProfileFetched] = useState(false)
   const [isFormReadOnly, setIsFormReadOnly] = useState(true)
+  const [isValid, setIsValid] = useState(true)
   const [message, setMessage] = useState('')
+  const [lastProfileData, setLastProfileData] = useState()
 
-  const { values, setValues, errors, handleChange, isValid } =
+  const { values, setValues, errors, handleChange, isFormValid } =
     useFormWithValidation({
       name: '',
       email: '',
     })
 
+  useEffect(() => {
+    if (isFormReadOnly) return
+
+    setIsValid(
+      isFormValid &&
+        validator.isEmail(values.email) &&
+        (lastProfileData.name !== values.name ||
+          lastProfileData.email !== values.email)
+    )
+  }, [
+    isFormReadOnly,
+    isFormValid,
+    lastProfileData?.email,
+    lastProfileData?.name,
+    values.email,
+    values.name,
+  ])
+
   const editProfileInfo = () => {
     setIsFormReadOnly(!isFormReadOnly)
+    setLastProfileData(values)
   }
 
   const saveProfileInfo = (e) => {
@@ -58,7 +81,7 @@ export const Profile = () => {
       .catch((error) => {
         console.log(error)
       })
-  }, [isLoggedIn, setValues])
+  }, [apiMain, isLoggedIn, setValues])
 
   return (
     <>

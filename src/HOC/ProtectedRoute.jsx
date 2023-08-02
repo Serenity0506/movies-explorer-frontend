@@ -4,9 +4,5 @@ import { UseCurrentUserContext } from '../context/CurrentUserContext'
 export const ProtectedRoute = ({ element: Component, ...props }) => {
   const { isLoggedIn } = UseCurrentUserContext()
 
-  return isLoggedIn ? (
-    <Component {...props} />
-  ) : (
-    <Navigate to='/signin' replace />
-  )
+  return isLoggedIn ? <Component {...props} /> : <Navigate to='/' replace />
 }

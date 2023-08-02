@@ -4,9 +4,9 @@ import { Header } from '../Header/Header'
 import MoviesCardList from './MoviesCardList/MoviesCardList'
 import SearchForm from './SearchForm/SearchForm'
 import { filterFilm } from '../../utils/movieFilter'
-import apiMain from '../../utils/Api/ApiMain'
 import Preloader from '../Sharing/Preloader/Preloader'
 import { useMoviesResizer } from '../../utils/hooks/useMoviesResizer'
+import { useApiMain } from '../../utils/withApiMain'
 
 export const SavedMovies = () => {
   const [search, setSearch] = useState({ query: '', isShortsOnly: false })
@@ -18,6 +18,8 @@ export const SavedMovies = () => {
 
   const [moviesShowLimit, setMoviesShowLimit] = useState(0)
   const [moviesShowIncrease, setMoviesShowIncrease] = useState(0)
+
+  const apiMain = useApiMain()
 
   useMoviesResizer(setMoviesShowLimit, setMoviesShowIncrease)
 
@@ -37,7 +39,7 @@ export const SavedMovies = () => {
       .catch(() => {
         setIsMoviesFetchError(true)
       })
-  }, [])
+  }, [apiMain])
 
   useEffect(() => {
     setFilteredMovies(

@@ -8,97 +8,135 @@ import Preloader from '../Sharing/Preloader/Preloader'
 import { UseCurrentUserContext } from '../../context/CurrentUserContext'
 import styles from './Movies.module.css'
 import { filterFilm } from '../../utils/movieFilter'
-import apiMain from '../../utils/Api/ApiMain'
 import { useMoviesResizer } from '../../utils/hooks/useMoviesResizer'
+import { useApiMain } from '../../utils/withApiMain'
 
-export const Movies = () => {
-  const { search } = UseCurrentUserContext()
-  const [isSearchHappened, setIsSearchHappened] = useState(false)
-  const [isMoviesFetched, setIsMoviesFetched] = useState(false)
-  const [isMoviesFetchError, setIsMoviesFetchError] = useState(false)
-  const [allMovies, setAllMovies] = useState([])
-  const [filteredMovies, setFilteredMovies] = useState([])
+const ErrorBlock = ({ message }) => {
+  return <div className={styles.movies_message}>{message}</div>
+}
+
+const PagedMovies = ({ movies }) => {
+  const [pagedMovies, setPagedMovies] = useState([])
 
   const [moviesShowLimit, setMoviesShowLimit] = useState(0)
   const [moviesShowIncrease, setMoviesShowIncrease] = useState(0)
 
   useMoviesResizer(setMoviesShowLimit, setMoviesShowIncrease)
 
-  const isSearchFormEmpty = search.query.length === 0
+  useEffect(() => {
+    setPagedMovies(movies.slice(0, moviesShowLimit))
+  }, [movies, moviesShowLimit])
 
-  const handleSearch = () => {
-    setIsSearchHappened(true)
+  return (
+    <>
+      <MoviesCardList
+        movies={pagedMovies}
+        isNoMoreMovies={pagedMovies.length === movies.length}
+        isSavedList={false}
+        onShowMoar={() =>
+          setMoviesShowLimit(moviesShowLimit + moviesShowIncrease)
+        }
+      />
+    </>
+  )
+}
+
+export const Movies = () => {
+  const { foundMovies, setFoundMovies } = UseCurrentUserContext()
+
+  const [allMovies, setAllMovies] = useState(null)
+  const [allMoviesFetching, setAllMoviesFetching] = useState(false)
+  const [likedMovies, setLikedMovies] = useState(null)
+  const [likedMoviesFetching, setLikedMoviesFetching] = useState(false)
+  const [filteredMoviesWithLikes, setFilteredMoviesWithLikes] = useState()
+  const [initialLoadingDone, setInitialLoadingDone] = useState(false)
+  const [unpredictableError, setUnpredictableError] = useState(null)
+
+  const apiMain = useApiMain()
+
+  const filterMovies = (movies, query, isShortsOnly) =>
+    movies.filter((movie) => filterFilm(movie, query, isShortsOnly))
+
+  const getMovies = () => {
+    if (allMovies !== null) {
+      return Promise.resolve(allMovies)
+    }
+    setAllMoviesFetching(true)
+
+    return apiMovies
+      .getMovies()
+      .then((movies) => {
+        setAllMovies(movies)
+        return movies
+      })
+      .finally(() => setAllMoviesFetching(false))
   }
 
   useEffect(() => {
-    if (isSearchHappened) {
-      Promise.all([apiMovies.getMovies(), apiMain.getMovies()])
-        .then(([movies, likedMovies]) => {
-          movies.forEach((movie) => {
-            const likedMovie = likedMovies.find((lm) => movie.id === lm.id)
+    if (!likedMovies) return
 
-            if (likedMovie) {
-              movie.like = true
-              movie._id = likedMovie._id
-            }
-          })
-          setAllMovies(movies)
-          setIsMoviesFetched(true)
-        })
-        .catch((err) => {
-          setIsMoviesFetchError(true)
-          console.log(err)
-        })
-    }
-  }, [isSearchHappened])
+    const foundMoviesWithLikes = foundMovies?.map((movie) => {
+      const likedMovie = likedMovies.find((lm) => movie.id === lm.id)
+
+      movie.like = !!likedMovie
+      movie._id = likedMovie?._id
+
+      return movie
+    })
+
+    setFilteredMoviesWithLikes(foundMoviesWithLikes)
+  }, [foundMovies, likedMovies])
+
+  const handleSearch = (newSearch) => {
+    setUnpredictableError(null)
+
+    getMovies()
+      .then((movies) => {
+        setFoundMovies(
+          filterMovies(movies, newSearch.query, newSearch.isShortsOnly)
+        )
+      })
+      .catch((error) => setUnpredictableError(error))
+  }
 
   useEffect(() => {
-    setFilteredMovies(
-      allMovies
-        .filter(
-          (movie) =>
-            !isSearchFormEmpty &&
-            filterFilm(movie, search.query, search.isShortsOnly)
-        )
-        .slice(0, moviesShowLimit)
-    )
-  }, [
-    allMovies,
-    search.query,
-    search.isShortsOnly,
-    isSearchFormEmpty,
-    moviesShowLimit,
-  ])
+    setLikedMoviesFetching(true)
+
+    apiMain
+      .getMovies()
+      .then((movies) => {
+        setLikedMovies(movies)
+      })
+      .catch((err) => setUnpredictableError(err))
+      .finally(() => {
+        setLikedMoviesFetching(false)
+        setInitialLoadingDone(true)
+      })
+  }, [apiMain])
 
   return (
     <>
       <Header />
       <main>
-        <SearchForm useContext={true} onSearch={handleSearch} />
-        <div className={styles.movies_message}>
-          {!isSearchHappened && 'Поищите что-нибудь'}
-          {isSearchHappened &&
-            isMoviesFetched &&
-            filteredMovies.length < 1 &&
-            !isSearchFormEmpty &&
-            'Ничего не найдено'}
-          {isSearchHappened &&
-            search.query.length === 0 &&
-            'Нужно ввести ключевое слово'}
-          {isMoviesFetchError && 'Ошибка загрузки данных'}
-        </div>
-        {isMoviesFetched && !isSearchFormEmpty && (
-          <MoviesCardList
-            movies={filteredMovies}
-            isNoMoreMovies={allMovies.length === filteredMovies.length}
-            isSavedList={false}
-            onShowMoar={() =>
-              setMoviesShowLimit(moviesShowLimit + moviesShowIncrease)
-            }
-          />
-        )}
-        {isSearchHappened && !isMoviesFetched && !isMoviesFetchError && (
+        <SearchForm
+          useContext={true}
+          onSearch={handleSearch}
+          formDisable={
+            likedMoviesFetching || allMoviesFetching || !initialLoadingDone
+          }
+        />
+        {likedMoviesFetching || allMoviesFetching || !initialLoadingDone ? (
           <Preloader />
+        ) : !!unpredictableError ? (
+          <ErrorBlock
+            message={`Ошибка загрузки данных: ${unpredictableError}`}
+          />
+        ) : !filteredMoviesWithLikes ? (
+          <ErrorBlock message='Попробуйте что-то поискать!' />
+        ) : filteredMoviesWithLikes.length < 1 ? (
+          <ErrorBlock message='Ничего не найдено' />
+        ) : (
+          <PagedMovies movies={filteredMoviesWithLikes} />
         )}
         <Footer />
       </main>

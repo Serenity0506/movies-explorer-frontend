@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './Checkbox.module.css'
 
-function Checkbox({ labelText, checkedInitial, onChange }) {
+function Checkbox({ labelText, checkedInitial, onChange, disabled }) {
   const [checked, setChecked] = useState(checkedInitial)
 
   const handleChange = () => {
@@ -20,6 +20,7 @@ function Checkbox({ labelText, checkedInitial, onChange }) {
         name='name'
         // hidden
         onChange={handleChange}
+        disabled={disabled}
       ></input>
       <span className={styles.checkbox__icon}></span>
       {labelText}

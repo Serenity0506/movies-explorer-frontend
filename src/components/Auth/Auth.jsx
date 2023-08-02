@@ -7,16 +7,23 @@ import ApiMain from '../../utils/Api/ApiMain'
 // import Preloader from '../Sharing/Preloader/Preloader'
 import { useFormWithValidation } from '../../utils/hooks/useFormWithValidation'
 import { UseCurrentUserContext } from '../../context/CurrentUserContext'
+import validator from 'validator'
 
 export default function Auth({ showLoginView, onRegister }) {
   const navigate = useNavigate()
   const { setToken, setEmail, isLoggedIn } = UseCurrentUserContext()
 
-  const { values, errors, handleChange } = useFormWithValidation({
-    name: 'Admin',
-    email: 'admin@local.ru',
-    password: '123456',
+  const [isValid, setIsValid] = useState(false)
+
+  const { values, errors, handleChange, isFormValid } = useFormWithValidation({
+    name: '',
+    email: '',
+    password: '',
   })
+
+  useEffect(() => {
+    setIsValid(isFormValid && validator.isEmail(values.email))
+  }, [isFormValid, values.email])
 
   const [formError, setFormError] = useState('')
 
@@ -98,6 +105,15 @@ export default function Auth({ showLoginView, onRegister }) {
           onChange={handleChange}
           required
         />
+        {errors.email ? (
+          <span className={styles.auth__error_text}>{errors.email}</span>
+        ) : values.email && !validator.isEmail(values.email) ? (
+          <span className={styles.auth__error_text}>
+            Поле заполнено некорректно
+          </span>
+        ) : (
+          ''
+        )}
         <label className={styles.auth__label}>Пароль</label>
         <input
           name='password'
@@ -117,7 +133,11 @@ export default function Auth({ showLoginView, onRegister }) {
 
         <span className={styles.auth__error_text}>{formError.message}</span>
 
-        <button type='submit' className={styles.auth__primary_button}>
+        <button
+          type='submit'
+          disabled={!isValid}
+          className={styles.auth__primary_button}
+        >
           {formSettings.primaryButtonText}
         </button>
       </form>

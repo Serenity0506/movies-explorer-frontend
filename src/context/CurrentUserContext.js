@@ -5,21 +5,26 @@ export const UseCurrentUserContext = () => useContext(CurrentUserContext)
 
 export function AppContextProvider({ children }) {
   const [token, setToken] = useState(() => {
-    const tokenFromLS = localStorage.getItem("token")
-    return tokenFromLS || ""
+    const fromLS = localStorage.getItem("token")
+    return fromLS || ""
   })
 
   const [email, setEmail] = useState(() => {
-    const emailFromLS = localStorage.getItem("email")
-    return emailFromLS || ""
+    const fromLS = localStorage.getItem("email")
+    return fromLS || ""
   })
 
   const [search, setSearch] = useState(() => {
-    const searchFromLS = JSON.parse(localStorage.getItem("search"))
-    return searchFromLS || { query: '', isShortsOnly: false }
+    const fromLS = JSON.parse(localStorage.getItem("search"))
+    return fromLS || { query: null, isShortsOnly: false }
   })
 
   const resetSearch = () => setSearch({ query: '', isShortsOnly: false })
+
+  const [foundMovies, setFoundMovies] = useState(() => {
+    const fromLS = JSON.parse(localStorage.getItem("foundMovies"))
+    return fromLS || null
+  })
 
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -33,6 +38,10 @@ export function AppContextProvider({ children }) {
   }, [email])
 
   useEffect(() => {
+    localStorage.setItem("foundMovies", JSON.stringify(foundMovies))
+  }, [foundMovies])
+
+  useEffect(() => {
     localStorage.setItem("search", JSON.stringify(search))
   }, [search])
 
@@ -41,6 +50,7 @@ export function AppContextProvider({ children }) {
   const onLogout = () => {
     setToken('')
     setCurrentUser({})
+    setFoundMovies(null)
     resetSearch()
 
     localStorage.clear()
@@ -48,7 +58,15 @@ export function AppContextProvider({ children }) {
 
   return (
     <CurrentUserContext.Provider
-      value={{ token, setToken, isLoggedIn, onLogout, email, setEmail, currentUser, setCurrentUser, loading, setLoading, search, setSearch, resetSearch }}
+      value={{
+        token, setToken,
+        isLoggedIn, onLogout,
+        email, setEmail,
+        currentUser, setCurrentUser,
+        loading, setLoading,
+        search, setSearch, resetSearch,
+        foundMovies, setFoundMovies
+      }}
     >
       {children}
     </CurrentUserContext.Provider>

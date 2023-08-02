@@ -4,14 +4,19 @@ import Checkbox from '../../Sharing/Checkbox/Checkbox'
 import styles from './SearchForm.module.css'
 import { UseCurrentUserContext } from '../../../context/CurrentUserContext'
 
-export default function SearchForm({ useContext, onSearch }) {
+export default function SearchForm({ useContext, onSearch, formDisable }) {
   const { search, setSearch } = UseCurrentUserContext()
-  const [searchInputValue, setSearchInputValue] = useState(
-    useContext ? search.query : ''
+
+  const [lastSearch, setLastSearch] = useState(null)
+  const [searchInputValue, setSearchInputValue] = useState(() =>
+    useContext ? search.query || '' : ''
   )
 
   const handleSearch = (evt) => {
     evt.preventDefault()
+
+    if (searchInputValue === lastSearch) return
+    setLastSearch(searchInputValue)
 
     const newSearch = {
       ...search,
@@ -44,16 +49,19 @@ export default function SearchForm({ useContext, onSearch }) {
           type='text'
           placeholder='Фильм'
           name='search'
-          minLength={3}
+          // minLength={3}
           maxLength={30}
-          required
+          // required
           value={searchInputValue}
           onChange={(e) => setSearchInputValue(e.target.value)}
+          disabled={formDisable}
         />
         <button
+          id='searchbtn'
           type='button'
           className={styles.searchForm__find}
           onClick={handleSearch}
+          disabled={formDisable}
         >
           Найти
         </button>
@@ -61,8 +69,9 @@ export default function SearchForm({ useContext, onSearch }) {
       <div className={styles.searchForm__checkbox_container}>
         <Checkbox
           labelText='Короткометражки'
-          checkedInitial={search.isShortsOnly}
+          checkedInitial={useContext && search.isShortsOnly}
           onChange={handleShortsFilterChanged}
+          disabled={formDisable}
         />
       </div>
     </>
