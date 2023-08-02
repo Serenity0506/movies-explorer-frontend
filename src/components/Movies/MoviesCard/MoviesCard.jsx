@@ -1,7 +1,6 @@
 // import { useState } from 'react'
 import { useState } from 'react'
 import styles from './MoviesCard.module.css'
-import { NavLink } from 'react-router-dom'
 import { useApiMain } from '../../../utils/withApiMain'
 
 export default function MoviesCard({ movie, isSaved, onDelete = () => {} }) {
