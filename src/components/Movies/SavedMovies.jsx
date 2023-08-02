@@ -57,7 +57,11 @@ export const SavedMovies = () => {
     <>
       <Header />
       <main>
-        <SearchForm useContext={false} onSearch={handleSearch} />
+        <SearchForm
+          search={search}
+          setSearch={setSearch}
+          onSearch={handleSearch}
+        />
         <MoviesCardList
           movies={filteredMovies}
           isNoMoreMovies={true}

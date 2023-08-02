@@ -42,7 +42,8 @@ const PagedMovies = ({ movies }) => {
 }
 
 export const Movies = () => {
-  const { foundMovies, setFoundMovies } = UseCurrentUserContext()
+  const { search, setSearch, foundMovies, setFoundMovies } =
+    UseCurrentUserContext()
 
   const [allMovies, setAllMovies] = useState(null)
   const [allMoviesFetching, setAllMoviesFetching] = useState(false)
@@ -119,7 +120,8 @@ export const Movies = () => {
       <Header />
       <main>
         <SearchForm
-          useContext={true}
+          search={search}
+          setSearch={setSearch}
           onSearch={handleSearch}
           formDisable={
             likedMoviesFetching || allMoviesFetching || !initialLoadingDone

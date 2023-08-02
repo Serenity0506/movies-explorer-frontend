@@ -2,15 +2,15 @@
 import { useState } from 'react'
 import Checkbox from '../../Sharing/Checkbox/Checkbox'
 import styles from './SearchForm.module.css'
-import { UseCurrentUserContext } from '../../../context/CurrentUserContext'
 
-export default function SearchForm({ useContext, onSearch, formDisable }) {
-  const { search, setSearch } = UseCurrentUserContext()
-
+export default function SearchForm({
+  search,
+  setSearch,
+  onSearch,
+  formDisable,
+}) {
   const [lastSearch, setLastSearch] = useState(null)
-  const [searchInputValue, setSearchInputValue] = useState(() =>
-    useContext ? search.query || '' : ''
-  )
+  const [searchInputValue, setSearchInputValue] = useState(() => search.query)
 
   const handleSearch = (evt) => {
     evt.preventDefault()
@@ -23,7 +23,7 @@ export default function SearchForm({ useContext, onSearch, formDisable }) {
       query: searchInputValue,
     }
 
-    useContext && setSearch(newSearch)
+    setSearch(newSearch)
     onSearch(newSearch)
   }
 
@@ -33,7 +33,7 @@ export default function SearchForm({ useContext, onSearch, formDisable }) {
       isShortsOnly: newState,
     }
 
-    useContext && setSearch(newSearch)
+    setSearch(newSearch)
     onSearch(newSearch)
   }
 
@@ -69,7 +69,7 @@ export default function SearchForm({ useContext, onSearch, formDisable }) {
       <div className={styles.searchForm__checkbox_container}>
         <Checkbox
           labelText='Короткометражки'
-          checkedInitial={useContext && search.isShortsOnly}
+          checkedInitial={search.isShortsOnly}
           onChange={handleShortsFilterChanged}
           disabled={formDisable}
         />
